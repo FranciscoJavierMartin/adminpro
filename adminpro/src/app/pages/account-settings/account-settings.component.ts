@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LOCALSTORAGE_THEME_KEY } from 'src/app/constants/localStorage';
 
 @Component({
   selector: 'app-account-settings',
@@ -6,13 +7,33 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./account-settings.component.scss'],
 })
 export class AccountSettingsComponent implements OnInit {
+  readonly linkTheme = document.querySelector('#theme');
+  private links: NodeListOf<Element>;
+
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.links = document.querySelectorAll('.selector');
+    this.checkCurrentTheme();
+  }
 
-  public changeTheme(theme: string) {
-    const linkTheme = document.querySelector('#theme');
+  public changeTheme(theme: string): void {
     const url = `./assets/css/colors/${theme}.css`;
-    linkTheme.setAttribute('href', url);
+    this.linkTheme.setAttribute('href', url);
+    localStorage.setItem(LOCALSTORAGE_THEME_KEY, url);
+    this.checkCurrentTheme();
+  }
+
+  private checkCurrentTheme(): void {
+    this.links.forEach((elem) => {
+      elem.classList.remove('working');
+      const btnTheme = elem.getAttribute('data-theme');
+      const btnThemeUrl = `./assets/css/colors/${btnTheme}.css`;
+      const currentTheme = this.linkTheme.getAttribute('href');
+
+      if (btnThemeUrl === currentTheme) {
+        elem.classList.add('working');
+      }
+    });
   }
 }
