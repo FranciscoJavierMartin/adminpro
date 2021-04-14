@@ -1,8 +1,12 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { User } from 'models';
-import { CreateUserRequestBody } from 'requests/users';
-import { CreateUserResponse, GetUsersResponse } from 'responses/users';
+import { CreateUserRequestBody, UpdateUserRequestBody } from 'requests/users';
+import {
+  CreateUserResponse,
+  GetUsersResponse,
+  UpdateUserReponse,
+} from 'responses/users';
 
 export async function getUsers(req: Request, res: Response<GetUsersResponse>) {
   const users = await User.find({}, 'name email role, google');
@@ -43,6 +47,50 @@ export async function createUser(
     res.status(500).json({
       ok: false,
       message: `Something went wrong ${error.toString()}`,
+    });
+  }
+}
+
+export async function updateUser(
+  req: Request<{ id: string }, {}, UpdateUserRequestBody>,
+  res: Response<UpdateUserReponse>
+) {
+  const { id } = req.params;
+  const { ...fields } = req.body;
+
+  try {
+    const user = await User.findById(id);
+
+    if (user) {
+      if (fields.email !== (user as any).email) {
+        const existingEmail = await User.findOne({ email: req.body.email });
+        if (existingEmail) {
+          res.status(400).json({
+            ok: false,
+            message: 'Email is already taken',
+          });
+        }
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        { ...fields },
+        {
+          new: true,
+        }
+      );
+
+      res.json({ ok: true, message: 'User updated', user: updatedUser });
+    } else {
+      res.status(404).json({
+        ok: false,
+        message: 'User does not exist on database',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: `Unexpected error ${error.toString()}`,
     });
   }
 }

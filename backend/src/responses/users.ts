@@ -7,3 +7,7 @@ export interface GetUsersResponse extends CommonResponse {
 export interface CreateUserResponse extends CommonResponse {
   user?: any;
 }
+
+export interface UpdateUserReponse extends CommonResponse {
+  user?: any;
+}
