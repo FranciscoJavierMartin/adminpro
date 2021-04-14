@@ -5,7 +5,7 @@ export interface GetUsersResponse extends CommonResponse {
 }
 
 export interface CreateUserResponse extends CommonResponse {
-  user?: any;
+  token?: string;
 }
 
 export interface UpdateUserReponse extends CommonResponse {
@@ -13,3 +13,7 @@ export interface UpdateUserReponse extends CommonResponse {
 }
 
 export interface DeleteUserResponse extends CommonResponse {}
+
+export interface LoginResponse extends CommonResponse {
+  token?: string;
+}

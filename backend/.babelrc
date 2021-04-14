@@ -13,7 +13,8 @@
           "controllers": "./src/controllers",
           "responses": "./src/responses",
           "requests": "./src/requests",
-          "middlewares": "./src/middlewares"
+          "middlewares": "./src/middlewares",
+          "helpers": "./src/helpers"
         }
       }
     ]

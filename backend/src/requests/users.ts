@@ -11,3 +11,8 @@ export interface UpdateUserRequestBody {
   email: string;
   role: UserRoles;
 }
+
+export interface LoginRequestBody {
+  email: string;
+  password: string;
+}

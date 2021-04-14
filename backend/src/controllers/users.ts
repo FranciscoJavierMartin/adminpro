@@ -1,13 +1,19 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import { User } from 'models';
-import { CreateUserRequestBody, UpdateUserRequestBody } from 'requests/users';
+import {
+  CreateUserRequestBody,
+  LoginRequestBody,
+  UpdateUserRequestBody,
+} from 'requests/users';
 import {
   CreateUserResponse,
   DeleteUserResponse,
   GetUsersResponse,
+  LoginResponse,
   UpdateUserReponse,
 } from 'responses/users';
+import { generateJWT } from 'helpers/jwt';
 
 export async function getUsers(req: Request, res: Response<GetUsersResponse>) {
   const users = await User.find({}, 'name email role, google');
@@ -35,12 +41,13 @@ export async function createUser(
 
       const salt = bcrypt.genSaltSync();
       (user as any).password = bcrypt.hashSync(req.body.password, salt);
-      await user.save();
+      const userSaved = await user.save();
 
+      const token = await generateJWT(userSaved.id);
       res.json({
         ok: true,
         message: 'User added',
-        user,
+        token,
       });
     }
   } catch (error) {
@@ -121,6 +128,48 @@ export async function deleteUser(
     res.status(500).json({
       ok: false,
       message: `Unexpected error ${error.toString()}`,
+    });
+  }
+}
+
+export async function login(
+  req: Request<{}, {}, LoginRequestBody>,
+  res: Response<LoginResponse>
+) {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (user) {
+      const validPassword = bcrypt.compareSync(
+        password,
+        (user as any).password
+      );
+
+      if (validPassword) {
+        const token = await generateJWT(user.id);
+        res.status(200).json({
+          ok: true,
+          message: 'Login success',
+          token,
+        });
+      } else {
+        res.status(400).json({
+          ok: false,
+          message: 'Email or password invalid',
+        });
+      }
+    } else {
+      res.status(400).json({
+        ok: false,
+        message: 'Email or password invalid',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: `Unexpected error: ${error.toString()}`,
     });
   }
 }
