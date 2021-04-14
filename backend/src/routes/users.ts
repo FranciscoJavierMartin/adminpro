@@ -1,9 +1,18 @@
-import { createUser, getUsers } from 'controllers/users';
 import { Router } from 'express';
+import { check } from 'express-validator';
+import { createUser, getUsers } from 'controllers/users';
 
 const router = Router();
 
 router.get('/', getUsers);
-router.post('/', createUser);
+router.post(
+  '/',
+  [
+    check('name', 'Name is required').not().isEmpty(),
+    check('email', 'Email is required').not().isEmpty().isEmail(),
+    check('password', 'Password is required').not().isEmpty(),
+  ],
+  createUser
+);
 
 export default router;

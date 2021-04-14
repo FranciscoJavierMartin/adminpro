@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import { User } from 'models';
 import { CreateUserRequestBody } from 'requests/users';
 import { CreateUserResponse, GetUsersResponse } from 'responses/users';
@@ -16,29 +17,38 @@ export async function createUser(
   req: Request<{}, {}, CreateUserRequestBody>,
   res: Response<CreateUserResponse>
 ) {
-  try {
-    const existingEmail = await User.findOne({ email: req.body.email });
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      ok: false,
+      message: 'Error on validations',
+      errors: errors.mapped(),
+    });
+  } else {
+    try {
+      const existingEmail = await User.findOne({ email: req.body.email });
 
-    if (existingEmail) {
-      res.status(400).json({
+      if (existingEmail) {
+        res.status(400).json({
+          ok: false,
+          message: 'Email is already in use',
+        });
+      } else {
+        const user = new User(req.body);
+        await user.save();
+
+        res.json({
+          ok: true,
+          message: 'User added',
+          user,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
         ok: false,
-        message: 'Email is already in use',
-      });
-    } else {
-      const user = new User(req.body);
-      await user.save();
-
-      res.json({
-        ok: true,
-        message: 'User added',
-        user,
+        message: `Something went wrong ${error.toString()}`,
       });
     }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      message: `Something went wrong ${error.toString()}`,
-    });
   }
 }
