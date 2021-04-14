@@ -1,6 +1,6 @@
 import express from 'express';
 import { config } from 'dotenv';
-import { connectToDB } from './database/config';
+import { connectToDB } from 'database/config';
 import cors from 'cors';
 import { userRoutes } from 'routes';
 
@@ -9,6 +9,7 @@ config();
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 connectToDB();
 

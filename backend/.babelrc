@@ -10,7 +10,9 @@
           "database": "./src/database",
           "models": "./src/models",
           "routes": "./src/routes",
-          "controllers": "./src/controllers"
+          "controllers": "./src/controllers",
+          "responses": "./src/responses",
+          "requests": "./src/requests"
         }
       }
     ]
