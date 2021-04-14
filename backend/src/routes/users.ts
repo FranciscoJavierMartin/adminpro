@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
-import { createUser, getUsers, updateUser } from 'controllers/users';
+import { createUser, deleteUser, getUsers, updateUser } from 'controllers/users';
 import { validateFields } from 'middlewares/validate-fields';
 
 const router = Router();
@@ -26,5 +26,6 @@ router.put(
   ],
   updateUser
 );
+router.delete('/:id', deleteUser);
 
 export default router;

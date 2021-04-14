@@ -4,6 +4,7 @@ import { User } from 'models';
 import { CreateUserRequestBody, UpdateUserRequestBody } from 'requests/users';
 import {
   CreateUserResponse,
+  DeleteUserResponse,
   GetUsersResponse,
   UpdateUserReponse,
 } from 'responses/users';
@@ -85,6 +86,35 @@ export async function updateUser(
       res.status(404).json({
         ok: false,
         message: 'User does not exist on database',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: `Unexpected error ${error.toString()}`,
+    });
+  }
+}
+
+export async function deleteUser(
+  req: Request<{ id: string }>,
+  res: Response<DeleteUserResponse>
+) {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id);
+
+    if (user) {
+      await User.findByIdAndDelete(id);
+      res.json({
+        ok: true,
+        message: 'User deleted',
+      });
+    } else {
+      res.status(404).json({
+        ok: false,
+        message: 'User not found',
       });
     }
   } catch (error) {

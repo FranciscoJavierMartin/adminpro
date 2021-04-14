@@ -11,3 +11,5 @@ export interface CreateUserResponse extends CommonResponse {
 export interface UpdateUserReponse extends CommonResponse {
   user?: any;
 }
+
+export interface DeleteUserResponse extends CommonResponse {}
