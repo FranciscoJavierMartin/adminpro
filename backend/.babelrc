@@ -6,7 +6,11 @@
       {
         "root": ["."],
         "alias": {
-          "common": "./src/common"
+          "constants": "./src/constants",
+          "database": "./src/database",
+          "models": "./src/models",
+          "routes": "./src/routes",
+          "controllers": "./src/controllers"
         }
       }
     ]
