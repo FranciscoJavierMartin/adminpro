@@ -12,7 +12,8 @@
           "routes": "./src/routes",
           "controllers": "./src/controllers",
           "responses": "./src/responses",
-          "requests": "./src/requests"
+          "requests": "./src/requests",
+          "middlewares": "./src/middlewares"
         }
       }
     ]
