@@ -1,3 +1,16 @@
-const sales: number[] = [10, 40, 50];
+import express from 'express';
+import { config } from 'dotenv';
+import { connectToDB } from './database/config';
+import cors from 'cors';
 
-const message = `Sales January ${sales[0]}`;
+config();
+
+const app = express();
+
+app.use(cors());
+
+connectToDB();
+
+app.listen(process.env.SERVER_PORT, () => {
+  console.log(`Server running on port ${process.env.SERVER_PORT}`);
+});
