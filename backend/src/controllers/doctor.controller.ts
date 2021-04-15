@@ -15,10 +15,17 @@ export async function getDoctors(
   req: Request,
   res: Response<GetDoctorsResponse>
 ) {
+  const doctors = await Doctor.find()
+    .populate('user', {
+      _id: 0,
+      name: 1,
+      email: 1,
+    })
+    .populate('hospital', { _id: 0, name: 1 });
   res.json({
     ok: true,
     message: 'Doctors list',
-    doctors: [],
+    doctors,
   });
 }
 

@@ -15,10 +15,15 @@ export async function getHospitals(
   req: Request,
   res: Response<GetHospitalsResponse>
 ) {
+  const hospitals = await Hospital.find().populate('user', {
+    _id: 0,
+    name: 1,
+    email: 1,
+  });
   res.json({
     ok: true,
     message: 'Hospital list',
-    hospitals: [],
+    hospitals,
   });
 }
 
