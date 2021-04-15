@@ -1,4 +1,5 @@
 import express from 'express';
+import morgan from 'morgan';
 import { config } from 'dotenv';
 import { connectToDB } from 'database/config';
 import cors from 'cors';
@@ -10,6 +11,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(morgan('tiny'));
 
 connectToDB();
 
