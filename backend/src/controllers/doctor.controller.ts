@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Doctor } from 'models';
 import {
   CreateDoctorRequestBody,
   UpdateDoctorRequestBody,
@@ -25,10 +26,25 @@ export async function createDoctor(
   req: Request<{}, {}, CreateDoctorRequestBody>,
   res: Response<CreateDoctorResponse>
 ) {
-  res.json({
-    ok: true,
-    message: 'Doctor created',
+  const id = (req as any).id;
+  const doctor = new Doctor({
+    user: id,
+    ...req.body,
   });
+
+  try {
+    const doctorSaved = await doctor.save();
+    res.json({
+      ok: true,
+      message: 'Doctor created',
+      doctor: doctorSaved,
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: `Unexpected error: ${error.toString()}`,
+    });
+  }
 }
 
 export async function updateDoctor(

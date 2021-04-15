@@ -10,12 +10,14 @@ const DoctorSchema = new Schema({
   },
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true,
   },
   hospital: {
     type: Schema.Types.ObjectId,
-    ref: 'Hospital'
-  }
+    ref: 'Hospital',
+    required: true,
+  },
 });
 
 DoctorSchema.method('toJSON', function () {
