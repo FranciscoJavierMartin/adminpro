@@ -6,7 +6,7 @@ import {
   getUsers,
   login,
   updateUser,
-} from 'controllers/users';
+} from 'controllers/user.controller';
 import { validateFields } from 'middlewares/validate-fields';
 import { validateJWT } from 'middlewares/validate-jwt';
 

@@ -5,14 +5,14 @@ import {
   CreateUserRequestBody,
   LoginRequestBody,
   UpdateUserRequestBody,
-} from 'requests/users';
+} from 'requests/user.request';
 import {
   CreateUserResponse,
   DeleteUserResponse,
   GetUsersResponse,
   LoginResponse,
   UpdateUserReponse,
-} from 'responses/users';
+} from 'responses/user.response';
 import { generateJWT } from 'helpers/jwt';
 
 export async function getUsers(req: Request, res: Response<GetUsersResponse>) {

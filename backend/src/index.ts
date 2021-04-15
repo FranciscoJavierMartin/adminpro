@@ -3,7 +3,7 @@ import morgan from 'morgan';
 import { config } from 'dotenv';
 import { connectToDB } from 'database/config';
 import cors from 'cors';
-import { userRoutes } from 'routes';
+import { userRoutes, hospitalRoutes, doctorRoutes } from 'routes';
 
 config();
 
@@ -16,6 +16,8 @@ app.use(morgan('tiny'));
 connectToDB();
 
 app.use('/api/users', userRoutes);
+app.use('/api/hospitals', hospitalRoutes);
+app.use('/api/doctors', doctorRoutes);
 
 app.listen(process.env.SERVER_PORT, () => {
   console.log(`Server running on port ${process.env.SERVER_PORT}`);

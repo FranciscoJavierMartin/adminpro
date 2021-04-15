@@ -1,3 +1,4 @@
-import User from './user';
+import User from './user.model';
+import Hospital from './hospital.model';
 
-export { User };
+export { User, Hospital };
