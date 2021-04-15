@@ -2,6 +2,7 @@ import { CommonResponse } from 'responses';
 
 export interface GetUsersResponse extends CommonResponse {
   users: any[];
+  total: number;
 }
 
 export interface CreateUserResponse extends CommonResponse {

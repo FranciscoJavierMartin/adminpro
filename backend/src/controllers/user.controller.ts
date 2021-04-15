@@ -15,12 +15,22 @@ import {
 } from 'responses/user.response';
 import { generateJWT } from 'helpers/jwt';
 
-export async function getUsers(req: Request, res: Response<GetUsersResponse>) {
-  const users = await User.find({}, 'name email role, google');
+export async function getUsers(
+  req: Request<{}, {}, {}, { from: number }>,
+  res: Response<GetUsersResponse>
+) {
+  const from: number = req.query.from || 0;
+
+  const [total, users] = await Promise.all([
+    User.count(),
+    User.find({}, 'name email role, google').skip(from).limit(5),
+  ]);
+
   res.json({
     ok: true,
     message: 'Users list',
     users,
+    total,
   });
 }
 
