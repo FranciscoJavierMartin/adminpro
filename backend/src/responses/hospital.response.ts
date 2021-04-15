@@ -4,7 +4,9 @@ export interface GetHospitalsResponse extends CommonResponse {
   hospitals: any[];
 }
 
-export interface CreateHospitalResponse extends CommonResponse {}
+export interface CreateHospitalResponse extends CommonResponse {
+  hospital?: any;
+}
 
 export interface UpdateHospitalReponse extends CommonResponse {}
 

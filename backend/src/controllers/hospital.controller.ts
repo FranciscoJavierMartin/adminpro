@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
+import { Hospital } from 'models';
 import {
-  CreateDoctorRequestBody,
-  UpdateDoctorRequestBody,
+  CreateHospitalRequestBody,
+  UpdateHospitalRequestBody,
 } from 'requests/hospital.request';
 import {
   CreateHospitalResponse,
@@ -22,17 +23,32 @@ export async function getHospitals(
 }
 
 export async function createHospital(
-  req: Request<{}, {}, CreateDoctorRequestBody>,
+  req: Request<{}, {}, CreateHospitalRequestBody>,
   res: Response<CreateHospitalResponse>
 ) {
-  res.json({
-    ok: true,
-    message: 'Hospital created',
+  const id = (req as any).id;
+  const hospital = new Hospital({
+    user: id,
+    ...req.body,
   });
+
+  try {
+    const hospitalSaved = await hospital.save();
+    await res.json({
+      ok: true,
+      message: 'Hospital created',
+      hospital: hospitalSaved,
+    });
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: `Unexpected error: ${error.toString()}`,
+    });
+  }
 }
 
 export async function updateHospital(
-  req: Request<{ id: string }, {}, UpdateDoctorRequestBody>,
+  req: Request<{ id: string }, {}, UpdateHospitalRequestBody>,
   res: Response<UpdateHospitalReponse>
 ) {
   res.json({

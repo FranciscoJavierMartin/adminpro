@@ -1,10 +1,7 @@
-export interface CreateDoctorRequestBody {
+export interface CreateHospitalRequestBody {
   name: string;
-  password: string;
-  email: string;
 }
 
-export interface UpdateDoctorRequestBody {
+export interface UpdateHospitalRequestBody {
   name: string;
-  email: string;
 }
