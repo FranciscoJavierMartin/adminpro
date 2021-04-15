@@ -5,3 +5,7 @@ export interface GetSearchResponse extends CommonResponse {
   doctors?: any[];
   hospitals?: any[];
 }
+
+export interface GetSearchByCollectionResponse extends CommonResponse {
+  result?: any[];
+}
