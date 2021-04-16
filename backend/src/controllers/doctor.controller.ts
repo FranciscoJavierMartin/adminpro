@@ -58,18 +58,64 @@ export async function updateDoctor(
   req: Request<{ id: string }, {}, UpdateDoctorRequestBody>,
   res: Response<UpdateDoctorReponse>
 ) {
-  res.json({
-    ok: true,
-    message: 'Doctor updated',
-  });
+  const { id } = req.params;
+
+  try {
+    const updatedDoctor = await Doctor.findByIdAndUpdate(
+      id,
+      {
+        ...req.body,
+        user: (req as any).id,
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (updatedDoctor) {
+      res.json({
+        ok: true,
+        message: 'Doctor updated',
+        doctor: updatedDoctor,
+      });
+    } else {
+      res.status(404).json({
+        ok: false,
+        message: 'Doctor not found',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: `Unexpected error ${error.toString()}`,
+    });
+  }
 }
 
 export async function deleteDoctor(
   req: Request<{ id: string }>,
   res: Response<DeleteDoctorResponse>
 ) {
-  res.json({
-    ok: true,
-    message: 'Doctor deleted',
-  });
+  const { id } = req.params;
+
+  try {
+    const doctorDeleted = await Doctor.findByIdAndDelete(id);
+
+    if (doctorDeleted) {
+      res.json({
+        ok: true,
+        message: 'Doctor deleted',
+      });
+    } else {
+      res.status(404).json({
+        ok: false,
+        message: 'Doctor not found',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: `Unexpected error ${error.toString()}`,
+    });
+  }
 }

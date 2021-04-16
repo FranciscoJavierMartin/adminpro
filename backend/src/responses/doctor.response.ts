@@ -8,6 +8,8 @@ export interface CreateDoctorResponse extends CommonResponse {
   doctor?: any;
 }
 
-export interface UpdateDoctorReponse extends CommonResponse {}
+export interface UpdateDoctorReponse extends CommonResponse {
+  doctor?: any;
+}
 
 export interface DeleteDoctorResponse extends CommonResponse {}
