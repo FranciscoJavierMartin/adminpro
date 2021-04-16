@@ -56,10 +56,38 @@ export async function updateHospital(
   req: Request<{ id: string }, {}, UpdateHospitalRequestBody>,
   res: Response<UpdateHospitalReponse>
 ) {
-  res.json({
-    ok: true,
-    message: 'Hospital updated',
-  });
+  const { id } = req.params;
+
+  try {
+    const updatedHospital = await Hospital.findByIdAndUpdate(
+      id,
+      {
+        ...req.body,
+        user: (req as any).id,
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (updatedHospital) {
+      res.json({
+        ok: true,
+        message: 'Hospital updated',
+        hospital: updatedHospital,
+      });
+    } else {
+      res.status(404).json({
+        ok: false,
+        message: 'Hospital not found',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: `Unexpected error ${error.toString()}`,
+    });
+  }
 }
 
 export async function deleteHospital(

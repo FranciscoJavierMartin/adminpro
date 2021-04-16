@@ -8,6 +8,8 @@ export interface CreateHospitalResponse extends CommonResponse {
   hospital?: any;
 }
 
-export interface UpdateHospitalReponse extends CommonResponse {}
+export interface UpdateHospitalReponse extends CommonResponse {
+  hospital?: any;
+}
 
 export interface DeleteHospitalResponse extends CommonResponse {}
