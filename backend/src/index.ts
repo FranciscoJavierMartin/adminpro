@@ -9,6 +9,7 @@ import {
   doctorRoutes,
   searchRouter,
   uploadRoutes,
+  authRoutes,
 } from 'routes';
 
 config();
@@ -21,6 +22,7 @@ app.use(morgan('tiny'));
 
 connectToDB();
 
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/hospitals', hospitalRoutes);
 app.use('/api/doctors', doctorRoutes);

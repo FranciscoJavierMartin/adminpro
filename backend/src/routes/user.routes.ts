@@ -4,8 +4,6 @@ import {
   createUser,
   deleteUser,
   getUsers,
-  googleSignIn,
-  login,
   updateUser,
 } from 'controllers/user.controller';
 import { validateFields } from 'middlewares/validate-fields';
@@ -36,19 +34,5 @@ router.put(
   updateUser
 );
 router.delete('/:id', [validateJWT], deleteUser);
-router.post(
-  '/login',
-  [
-    check('email', 'Email is required').not().isEmpty().isEmail(),
-    check('password', 'Password is required').not().isEmpty(),
-    validateFields,
-  ],
-  login
-);
-router.post(
-  '/google',
-  [check('token', 'Google token is required').not().isEmpty(), validateFields],
-  googleSignIn
-);
 
 export default router;
