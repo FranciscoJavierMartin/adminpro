@@ -18,3 +18,7 @@ export interface DeleteUserResponse extends CommonResponse {}
 export interface LoginResponse extends CommonResponse {
   token?: string;
 }
+
+export interface GoogleSignInResponse extends CommonResponse {
+  token?: string;
+}

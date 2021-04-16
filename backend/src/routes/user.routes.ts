@@ -4,6 +4,7 @@ import {
   createUser,
   deleteUser,
   getUsers,
+  googleSignIn,
   login,
   updateUser,
 } from 'controllers/user.controller';
@@ -43,6 +44,11 @@ router.post(
     validateFields,
   ],
   login
+);
+router.post(
+  '/google',
+  [check('token', 'Google token is required').not().isEmpty(), validateFields],
+  googleSignIn
 );
 
 export default router;
