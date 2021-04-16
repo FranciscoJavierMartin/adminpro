@@ -45,13 +45,13 @@ async function updateImageOnEntity(
   try {
     const entity = await model.findById(id);
     if (entity) {
-      const oldPath = `./uploads/${path}/${filename}`;
+      const oldPath = `./uploads/${path}/${(entity as any).img}`;
       if (fs.existsSync(oldPath)) {
         fs.unlinkSync(oldPath);
       }
       (entity as any).img = filename;
       await entity.save();
-      res = false;
+      res = true;
     } else {
       res = false;
     }

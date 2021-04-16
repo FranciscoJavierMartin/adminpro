@@ -1,6 +1,11 @@
+import path from 'path';
+import fs from 'fs';
 import { Request, Response } from 'express';
 import { v4 as uuid } from 'uuid';
-import { UploadFileResponse } from 'responses/upload.response';
+import {
+  GetImageResponse,
+  UploadFileResponse,
+} from 'responses/upload.response';
 import { getFileExtension, updateImage } from 'helpers/file';
 
 export async function uploadFile(
@@ -35,4 +40,20 @@ export async function uploadFile(
       );
     }
   });
+}
+
+export async function getImage(
+  req: Request<{ type: string; photo: string }>,
+  res: Response<GetImageResponse>
+) {
+  const { type, photo } = req.params;
+
+  const pathImage = path.join(__dirname, `../../uploads/${type}/${photo}`);
+
+  if (fs.existsSync(pathImage)) {
+    res.sendFile(pathImage);
+  } else {
+    const pathImage = path.join(__dirname, `../../uploads/no-img.jpg`);
+    res.sendFile(pathImage);
+  }
 }
