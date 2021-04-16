@@ -22,7 +22,7 @@ router.post(
   ],
   createDoctor
 );
-router.put('/:id', updateDoctor);
-router.delete('/:id', deleteDoctor);
+router.put('/:id', [validateJWT], updateDoctor);
+router.delete('/:id', [validateJWT], deleteDoctor);
 
 export default router;
