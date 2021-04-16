@@ -94,8 +94,26 @@ export async function deleteHospital(
   req: Request<{ id: string }>,
   res: Response<DeleteHospitalResponse>
 ) {
-  res.json({
-    ok: true,
-    message: 'Hospital deleted',
-  });
+  const { id } = req.params;
+
+  try {
+    const hospitalDeleted = await Hospital.findByIdAndDelete(id);
+
+    if (hospitalDeleted) {
+      res.json({
+        ok: true,
+        message: 'Hospital deleted',
+      });
+    } else {
+      res.status(404).json({
+        ok: false,
+        message: 'Hospital not found',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      ok: false,
+      message: `Unexpected error ${error.toString()}`,
+    });
+  }
 }
