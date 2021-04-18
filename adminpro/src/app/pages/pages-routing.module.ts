@@ -5,6 +5,7 @@ import { DashboardComponent } from '../pages/dashboard/dashboard.component';
 import { PagesComponent } from '../pages/pages.component';
 import { ProgressComponent } from '../pages/progress/progress.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -18,14 +19,19 @@ const routes: Routes = [
         data: { title: 'Dashboard' },
       },
       {
-        path: 'progress',
-        component: ProgressComponent,
-        data: { title: 'Progress' },
-      },
-      {
         path: 'account-settings',
         component: AccountSettingsComponent,
         data: { title: 'Account Settings' },
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        data: { title: 'Profile' },
+      },
+      {
+        path: 'progress',
+        component: ProgressComponent,
+        data: { title: 'Progress' },
       },
     ],
   },
