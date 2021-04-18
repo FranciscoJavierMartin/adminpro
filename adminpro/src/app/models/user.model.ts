@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { UserRoles } from '../constants/roles';
 
 export class User {
@@ -10,4 +11,9 @@ export class User {
     public role?: UserRoles,
     public id?: string
   ) {}
+
+  get imageUrl(): string {
+    const image = this.img ?? 'no-image.png';
+    return `${environment.base_url}upload/doctors/${image}`;
+  }
 }

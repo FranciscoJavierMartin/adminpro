@@ -5,12 +5,19 @@ import { LoginFormData, RegisterFormData } from '../interfaces/forms';
 import { environment } from 'src/environments/environment';
 import { catchError, map, tap } from 'rxjs/operators';
 import { LOCALSTORAGE_TOKEN_KEY } from '../constants/localStorage';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  private user: User;
+
   constructor(private http: HttpClient) {}
+
+  public get getUser(): User {
+    return this.user;
+  }
 
   public register(registerFormData: RegisterFormData): Observable<Object> {
     return this.http
@@ -23,7 +30,13 @@ export class UserService {
   }
 
   public login(loginFormData: LoginFormData): Observable<Object> {
-    return this.http.post(`${environment.base_url}auth/login`, loginFormData);
+    return this.http
+      .post(`${environment.base_url}auth/login`, loginFormData)
+      .pipe(
+        tap((resp: any) => {
+          localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, resp.token);
+        })
+      );
   }
 
   public validateToken(): Observable<boolean> {
@@ -36,10 +49,12 @@ export class UserService {
         },
       })
       .pipe(
-        tap((resp: any) => {
+        map((resp: any) => {
+          const { name, email, img, google, role, id } = resp.user;
+          this.user = new User(name, email, '', img, google, role, id);
           localStorage.setItem(LOCALSTORAGE_TOKEN_KEY, resp.token);
+          return true;
         }),
-        map((res) => true),
         catchError((error) => of(false))
       );
   }

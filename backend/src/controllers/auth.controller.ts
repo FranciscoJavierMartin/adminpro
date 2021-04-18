@@ -95,11 +95,14 @@ export async function renewToken(
   res: Response<RenewTokenResponse>
 ) {
   try {
+    const id = (req as any).id;
     const token = await generateJWT((req as any).id);
+    const user = await User.findById(id);
     res.json({
       ok: true,
       message: 'Renew token success',
       token,
+      user,
     });
   } catch (error) {
     res.status(500).json({

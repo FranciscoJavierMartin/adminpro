@@ -10,4 +10,5 @@ export interface GoogleSignInResponse extends CommonResponse {
 
 export interface RenewTokenResponse extends CommonResponse {
   token?: string;
+  user?: any;
 }

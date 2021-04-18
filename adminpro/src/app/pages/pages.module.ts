@@ -8,9 +8,10 @@ import { SharedModule } from '../shared/shared.module';
 import { AppRoutingModule } from '../app-routing.module';
 import { ComponentsModule } from '../components/components.module';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
-  declarations: [DashboardComponent, ProgressComponent, PagesComponent, AccountSettingsComponent],
+  declarations: [DashboardComponent, ProgressComponent, PagesComponent, AccountSettingsComponent, ProfileComponent],
   imports: [CommonModule, SharedModule, AppRoutingModule, ComponentsModule],
   exports: [DashboardComponent, ProgressComponent, PagesComponent],
 })
