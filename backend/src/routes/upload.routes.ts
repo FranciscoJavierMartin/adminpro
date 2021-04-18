@@ -25,7 +25,6 @@ router.put(
 router.get(
   '/:type/:photo',
   [
-    validateJWT,
     param(
       'type',
       'Type should be one of these: "users", "doctors" or "hospitals".'
