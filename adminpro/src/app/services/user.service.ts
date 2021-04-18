@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { LoginFormData, RegisterFormData } from '../interfaces/forms';
+import {
+  LoginFormData,
+  RegisterFormData,
+  UpdateProfileFormData,
+} from '../interfaces/forms';
 import { environment } from 'src/environments/environment';
 import { catchError, map, tap } from 'rxjs/operators';
 import { LOCALSTORAGE_TOKEN_KEY } from '../constants/localStorage';
@@ -17,6 +21,10 @@ export class UserService {
 
   public get getUser(): User {
     return this.user;
+  }
+
+  private get token() {
+    return localStorage.getItem(LOCALSTORAGE_TOKEN_KEY) || '';
   }
 
   public register(registerFormData: RegisterFormData): Observable<Object> {
@@ -40,12 +48,10 @@ export class UserService {
   }
 
   public validateToken(): Observable<boolean> {
-    const token = localStorage.getItem(LOCALSTORAGE_TOKEN_KEY) || '';
-
     return this.http
       .get(`${environment.base_url}auth/renew`, {
         headers: {
-          'X-Token': token,
+          'X-Token': this.token,
         },
       })
       .pipe(
@@ -61,5 +67,25 @@ export class UserService {
 
   public logout(): void {
     localStorage.removeItem(LOCALSTORAGE_TOKEN_KEY);
+  }
+
+  public updateProfile(updateProfileFormData: UpdateProfileFormData) {
+    return this.http
+      .put(
+        `${environment.base_url}users/${this.user.id}`,
+        { ...updateProfileFormData, role: this.user.role },
+        {
+          headers: {
+            'X-Token': this.token,
+          },
+        }
+      )
+      .pipe(
+        tap((res: any) => {
+          const { email, name } = res.user;
+          this.user.name = name;
+          this.user.email = email;
+        })
+      );
   }
 }
