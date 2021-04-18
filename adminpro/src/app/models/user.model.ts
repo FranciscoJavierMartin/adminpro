@@ -14,6 +14,6 @@ export class User {
 
   get imageUrl(): string {
     const image = this.img ?? 'no-image.png';
-    return `${environment.base_url}upload/doctors/${image}`;
+    return `${environment.base_url}upload/users/${image}`;
   }
 }
