@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { catchError, map, tap } from 'rxjs/operators';
 import { LOCALSTORAGE_TOKEN_KEY } from '../constants/localStorage';
 import { User } from '../models/user.model';
+import { LoadUsers } from '../interfaces/response';
 
 @Injectable({
   providedIn: 'root',
@@ -87,5 +88,13 @@ export class UserService {
           this.user.email = email;
         })
       );
+  }
+
+  public loadUsers(from: number = 0): Observable<LoadUsers>{
+    return this.http.get<LoadUsers>(`${environment.base_url}users`, {
+      headers: {
+        'X-Token': this.token,
+      },
+    });
   }
 }

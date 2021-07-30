@@ -19,10 +19,28 @@ export class SidebarService {
         },
       ],
     },
+    {
+      title: 'Maintenance',
+      icon: 'mdi mdi-folder-lock-open',
+      submenu: [
+        {
+          title: 'Users',
+          url: 'users',
+        },
+        {
+          title: 'Hospitals',
+          url: 'hospitals',
+        },
+        {
+          title: 'Doctors',
+          url: 'doctors',
+        },
+      ],
+    },
   ];
   constructor() {}
 
-  public get menu(){
+  public get menu() {
     return this.menuItems;
   }
 }
